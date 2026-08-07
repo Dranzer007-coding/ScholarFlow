@@ -1,0 +1,109 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  passwordHash  String
+  name          String
+  role          String         // "STUDENT", "OFFICER", "ADMIN"
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  applications  Application[]
+  notifications Notification[]
+  auditLogs     AuditLog[]
+}
+
+model Scholarship {
+  id                 String        @id @default(uuid())
+  title              String
+  description        String
+  criteriaMinCgpa    Float
+  criteriaMaxIncome  Float
+  criteriaCategory   String        // "ALL", "SC", "ST", "OBC", "GENERAL", "MINORITIES"
+  amount             Float
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  applications       Application[]
+}
+
+model Application {
+  id               String        @id @default(uuid())
+  studentId        String
+  student          User          @relation(fields: [studentId], references: [id])
+  scholarshipId    String
+  scholarship      Scholarship   @relation(fields: [scholarshipId], references: [id])
+  status           String        // "DRAFT", "SUBMITTED", "DOCUMENT_VERIFICATION", "ELIGIBILITY_CHECK", "FRAUD_DETECTION", "OFFICER_REVIEW", "APPROVED", "REJECTED"
+  currentStage     String        // "SUBMITTED", "DOCUMENT_VERIFICATION", "ELIGIBILITY_CHECK", "FRAUD_DETECTION", "OFFICER_REVIEW", "COMPLETED"
+  cgpa             Float
+  annualIncome     Float
+  category         String        // "GENERAL", "SC", "ST", "OBC", etc.
+  course           String
+  college          String
+  bankAccountNumber String
+  ifscCode         String
+  aadhaarNumber    String
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  documents        Document[]
+  agentResults     AgentResult[]
+  auditLogs        AuditLog[]
+  notifications    Notification[]
+}
+
+model Document {
+  id            String      @id @default(uuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  documentType  String      // "AADHAAR", "INCOME_CERTIFICATE", "MARKSHEET"
+  fileUrl       String
+  status        String      // "PENDING", "VERIFIED", "REJECTED"
+  confidence    Float?
+  errorMessage  String?
+  extractedText String?
+  metadata      String?     // JSON string
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model AgentResult {
+  id            String      @id @default(uuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  agentType     String      // "DOCUMENT", "OCR", "ELIGIBILITY", "FRAUD", "COPILOT"
+  status        String      // "SUCCESS", "WARNING", "FAILED"
+  resultData    String      // JSON string
+  confidence    Float
+  createdAt     DateTime    @default(now())
+}
+
+model AuditLog {
+  id            String       @id @default(uuid())
+  applicationId String?
+  application   Application? @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  userId        String?
+  user          User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  actorType     String       // "SYSTEM", "USER", "OFFICER"
+  action        String
+  details       String
+  timestamp     DateTime     @default(now())
+}
+
+model Notification {
+  id            String       @id @default(uuid())
+  userId        String
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  applicationId String?
+  application   Application? @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  title         String
+  message       String
+  isRead        Boolean      @default(false)
+  type          String       // "EMAIL", "IN_APP"
+  createdAt     DateTime     @default(now())
+}
