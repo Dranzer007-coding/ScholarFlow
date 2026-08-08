@@ -2,6 +2,7 @@
 
 **ScholarFlow AI** is an intelligent, agent-driven scholarship processing and automated workflow platform. Designed to eliminate manual processing bottlenecks and reduce scholarship fraud, ScholarFlow leverages multi-agent AI automation to perform document verification (OCR), eligibility evaluation, fraud detection, and officer decision assistance.
 
+Live Project Deployed at: https://scholar-flow-bay.vercel.app/
 ---
 
 ## 🌟 Key Features
