@@ -8,7 +8,8 @@
     "dev:frontend": "npm --prefix frontend run dev",
     "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,green\" \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
     "start": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,green\" \"npm --prefix backend start\" \"npm --prefix frontend run dev\"",
-    "build": "DATABASE_URL=file:./dev.db npx prisma generate --schema=backend/prisma/schema.prisma && cd frontend && npm run build"
+    "postinstall": "cross-env DATABASE_URL=\"file:./dev.db\" prisma generate --schema=backend/prisma/schema.prisma",
+    "build": "npm --prefix frontend install && npm --prefix frontend run build"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
@@ -16,6 +17,7 @@
     "bcryptjs": "^2.4.3",
     "core-js": "^3.50.0",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
