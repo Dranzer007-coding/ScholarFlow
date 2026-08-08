@@ -91,7 +91,7 @@ npm run dev
 
 | Portal | Role | Email / ID | Password | Portal Features & Access |
 | :--- | :---: | :--- | :--- | :--- |
-| **Officer Portal** 🛡️ | `OFFICER` | `scholarflow_off@gmail.com` | `scholar1234` | Verification dashboard, AI Copilot recommendations, fraud risk scores, and decision authority |
+| **Officer Portal** 🛡️ | `OFFICER` | `scholarflow_off@gmail.com` | `scholar1234` | Verification dashboard, AI Copilot recommendations, fraud risk scores, AI Q&A chatbot, and decision authority |
 | **Student Portal** 🎓 | `STUDENT` | `rahul@student.com` | `password123` | Scholarship browsing, document submission, and real-time application tracking |
 
 ---
