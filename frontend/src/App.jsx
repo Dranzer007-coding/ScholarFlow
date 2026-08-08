@@ -1,13 +1,176 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
+import Home from './pages/Home';
 import Login from './pages/Login';
 import StudentDashboard from './pages/StudentDashboard';
 import ApplyScholarship from './pages/ApplyScholarship';
 import Submitted from './pages/Submitted';
 import OfficerDashboard from './pages/OfficerDashboard';
 import OfficerReview from './pages/OfficerReview';
-import { Sun, Moon, Cpu } from 'lucide-react';
+import { Sun, Moon, Cpu, ArrowRight } from 'lucide-react';
+
 import { api } from './services/api';
+
+const HeaderNav = ({ user, isDark, toggleTheme, handleSignOut }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleNavClick = (sectionId) => {
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <header className="glass-panel" style={{
+      margin: '1rem', padding: '0.875rem 1.75rem', borderRadius: '14px',
+      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+      position: 'sticky', top: '1rem', zIndex: 100,
+      background: 'rgba(13, 19, 33, 0.9)',
+      backdropFilter: 'blur(16px)'
+    }}>
+      {/* Brand & Logo */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', textDecoration: 'none' }}>
+          <img
+            src="/logo.jpg"
+            alt="ScholarFlow AI Logo"
+            style={{ width: '32px', height: '32px', borderRadius: '6px', objectFit: 'cover' }}
+            onError={(e) => { e.target.style.display = 'none'; }}
+          />
+          <Cpu size={24} color="var(--accent-saffron)" style={{ display: 'none' }} />
+          <span style={{
+            fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.2rem',
+            color: 'var(--text-primary)', letterSpacing: '-0.02em', display: 'inline-flex', alignItems: 'center', gap: '0.5rem'
+          }}>
+            <span>ScholarFlow <span style={{ color: 'var(--accent-saffron)' }}>AI</span></span>
+            <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-secondary)', opacity: 0.95 }} className="desktop-nav">
+              — Supporting Talents, Building Bharat
+            </span>
+          </span>
+        </Link>
+      </div>
+
+      {/* Nav Links (Product, How It Works, About, Contact) */}
+      <nav style={{ display: 'flex', alignItems: 'center', gap: '1.75rem' }} className="desktop-nav">
+        <button
+          onClick={() => handleNavClick('product')}
+          style={{
+            background: 'none', border: 'none', color: 'var(--text-secondary)',
+            fontSize: '0.9375rem', fontWeight: 600, cursor: 'pointer', outline: 'none',
+            transition: 'color 0.2s ease'
+          }}
+          onMouseEnter={(e) => e.target.style.color = 'var(--text-primary)'}
+          onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
+        >
+          Product
+        </button>
+
+        <button
+          onClick={() => handleNavClick('how-it-works')}
+          style={{
+            background: 'none', border: 'none', color: 'var(--text-secondary)',
+            fontSize: '0.9375rem', fontWeight: 600, cursor: 'pointer', outline: 'none',
+            transition: 'color 0.2s ease'
+          }}
+          onMouseEnter={(e) => e.target.style.color = 'var(--text-primary)'}
+          onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
+        >
+          How It Works
+        </button>
+
+        <button
+          onClick={() => handleNavClick('about')}
+          style={{
+            background: 'none', border: 'none', color: 'var(--text-secondary)',
+            fontSize: '0.9375rem', fontWeight: 600, cursor: 'pointer', outline: 'none',
+            transition: 'color 0.2s ease'
+          }}
+          onMouseEnter={(e) => e.target.style.color = 'var(--text-primary)'}
+          onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
+        >
+          About
+        </button>
+
+        <button
+          onClick={() => handleNavClick('contact')}
+          style={{
+            background: 'none', border: 'none', color: 'var(--text-secondary)',
+            fontSize: '0.9375rem', fontWeight: 600, cursor: 'pointer', outline: 'none',
+            transition: 'color 0.2s ease'
+          }}
+          onMouseEnter={(e) => e.target.style.color = 'var(--text-primary)'}
+          onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
+        >
+          Contact
+        </button>
+      </nav>
+
+      {/* Right Controls: Theme Toggle & Try App Button */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+        <button
+          onClick={toggleTheme}
+          style={{
+            background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-card)',
+            padding: '0.5rem', borderRadius: '8px', cursor: 'pointer',
+            color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', outline: 'none'
+          }}
+          title="Toggle color theme"
+        >
+          {isDark ? <Sun size={18} /> : <Moon size={18} />}
+        </button>
+
+        {user ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <Link
+              to={user.role === 'OFFICER' ? '/reviewer' : '/dashboard'}
+              style={{
+                fontSize: '0.8125rem', fontWeight: 700, padding: '0.35rem 0.75rem', borderRadius: '6px',
+                backgroundColor: user.role === 'OFFICER' ? 'rgba(249,115,22,0.15)' : 'rgba(59,130,246,0.15)',
+                color: user.role === 'OFFICER' ? 'var(--accent-saffron)' : 'var(--accent-blue)',
+                textDecoration: 'none'
+              }}
+            >
+              Dashboard ({user.name.split(' ')[0]})
+            </Link>
+            <button
+              onClick={handleSignOut}
+              style={{
+                background: 'none', border: 'none', color: 'var(--accent-rose)',
+                fontSize: '0.8125rem', fontWeight: 600, cursor: 'pointer', outline: 'none'
+              }}
+            >
+              Sign Out
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => navigate('/login')}
+            className="btn btn-primary"
+            style={{
+              padding: '0.55rem 1.15rem',
+              fontSize: '0.875rem',
+              borderRadius: '8px',
+              boxShadow: '0 4px 15px rgba(249, 115, 22, 0.3)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.35rem'
+            }}
+          >
+            Try App <ArrowRight size={16} />
+          </button>
+        )}
+      </div>
+    </header>
+  );
+};
 
 const AppContent = () => {
   const [user, setUser] = useState(api.getCurrentUser());
@@ -15,6 +178,7 @@ const AppContent = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    document.title = 'ScholarFlow AI — Supporting Talents, Building Bharat';
     setUser(api.getCurrentUser());
   }, []);
 
@@ -40,66 +204,17 @@ const AppContent = () => {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <header className="glass-panel" style={{
-        margin: '1rem', padding: '1rem 1.5rem', borderRadius: '12px',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        position: 'sticky', top: '1rem', zIndex: 100
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <Cpu size={24} color="var(--accent-saffron)" />
-          <Link to={user ? (user.role === 'OFFICER' ? '/reviewer' : '/dashboard') : '/'} style={{
-            fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.25rem',
-            color: 'var(--text-primary)', textDecoration: 'none', letterSpacing: '-0.02em'
-          }}>
-            ScholarFlow <span style={{ color: 'var(--accent-saffron)' }}>AI</span>
-          </Link>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-          <button
-            onClick={toggleTheme}
-            style={{
-              background: 'none', border: 'none', cursor: 'pointer',
-              color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', outline: 'none'
-            }}
-            title="Toggle color theme"
-          >
-            {isDark ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
-
-          {user ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <span style={{
-                fontSize: '0.75rem', fontWeight: 700, padding: '0.25rem 0.5rem', borderRadius: '4px',
-                backgroundColor: user.role === 'OFFICER' ? 'rgba(249,115,22,0.1)' : 'rgba(59,130,246,0.1)',
-                color: user.role === 'OFFICER' ? 'var(--accent-saffron)' : 'var(--accent-blue)'
-              }}>
-                {user.role} MODE
-              </span>
-              <span style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--text-primary)' }}>
-                {user.name}
-              </span>
-              <button
-                onClick={handleSignOut}
-                style={{
-                  background: 'none', border: 'none', color: 'var(--accent-rose)',
-                  fontSize: '0.8125rem', fontWeight: 600, cursor: 'pointer', outline: 'none'
-                }}
-              >
-                Sign Out
-              </button>
-            </div>
-          ) : (
-            <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
-              AI Governance System v1.0
-            </span>
-          )}
-        </div>
-      </header>
+      <HeaderNav
+        user={user}
+        isDark={isDark}
+        toggleTheme={toggleTheme}
+        handleSignOut={handleSignOut}
+      />
 
       <main style={{ flex: 1, paddingBottom: '3rem' }}>
         <Routes>
-          <Route path="/" element={<Login onLogin={handleLoginSuccess} />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login onLogin={handleLoginSuccess} />} />
           <Route path="/dashboard" element={<StudentDashboard />} />
           <Route path="/apply-scholarship" element={<ApplyScholarship />} />
           <Route path="/submitted" element={<Submitted />} />
@@ -109,11 +224,20 @@ const AppContent = () => {
       </main>
 
       <footer style={{
-        textAlign: 'center', padding: '1.5rem', fontSize: '0.8125rem',
+        textAlign: 'center', padding: '2rem 1.5rem', fontSize: '0.8125rem',
         color: 'var(--text-secondary)', borderTop: '1px solid var(--border-card)',
-        margin: '2rem 1rem 1rem'
+        margin: '2rem 1rem 1rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '0.5rem'
       }}>
-        ScholarFlow AI © 2026. Real-time Multi-Agent Verification Platform. All rights reserved.
+        <div style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.9375rem' }}>
+          ScholarFlow <span style={{ color: 'var(--accent-saffron)' }}>AI</span>
+        </div>
+        <p style={{ margin: 0 }}>
+          Supporting Talent. Building Bharat. © 2026 ScholarFlow AI Infrastructure. All rights reserved.
+        </p>
       </footer>
     </div>
   );

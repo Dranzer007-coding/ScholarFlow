@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { api } from '../services/api';
 import { LogIn, User, ShieldCheck } from 'lucide-react';
 
@@ -14,6 +14,13 @@ const Login = ({ onLogin }) => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.search.includes('expired=1')) {
+      setError('Your session has expired or your user account was updated. Please sign in again.');
+    }
+  }, [location.search]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -120,7 +127,7 @@ const Login = ({ onLogin }) => {
             <input
               type="email"
               className="form-input"
-              placeholder={isStudent ? 'Enter Student Email id' : 'Enter Officer email id'}
+              placeholder={isStudent ? 'Enter Student email-id' : 'Enter officer email-id'}
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
@@ -132,7 +139,7 @@ const Login = ({ onLogin }) => {
             <input
               type="password"
               className="form-input"
-              placeholder="••••••••"
+              placeholder={isStudent ? 'Enter Password' : 'Enter Password'}
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
@@ -149,9 +156,37 @@ const Login = ({ onLogin }) => {
             {loading ? 'Processing...' : isRegister ? 'Create Account' : 'Continue to Portal'}
           </button>
         </form>
-
+        {/* Quick Fill Demo Credentials */}
+        <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
+          <button
+            type="button"
+            onClick={() => {
+              if (isStudent) {
+                setEmail('rahul@student.com');
+                setPassword('password123');
+              } else {
+                setEmail('scholarflow_off@gmail.com');
+                setPassword('scholar1234');
+              }
+              setError('');
+            }}
+            style={{
+              background: 'rgba(255, 153, 51, 0.1)',
+              border: '1px solid rgba(255, 153, 51, 0.3)',
+              color: 'var(--accent-saffron)',
+              padding: '0.4rem 0.8rem',
+              borderRadius: '6px',
+              fontSize: '0.8125rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            ⚡ Auto-fill Demo {isStudent ? 'Student' : 'Officer'} Credentials
+          </button>
+        </div>
         {isStudent && (
-          <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.875rem' }}>
+          <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.875rem' }}>
             <span style={{ color: 'var(--text-secondary)' }}>
               {isRegister ? 'Already have an account? ' : "Don't have an account? "}
             </span>

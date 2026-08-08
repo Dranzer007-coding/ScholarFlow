@@ -14,10 +14,18 @@ const handleResponse = async (response) => {
   try {
     const text = await response.text();
     data = text ? JSON.parse(text) : {};
-  } catch (err) {
+  } catch (_err) {
+
     throw new Error(`API Request failed: Server returned an invalid response (Status ${response.status})`);
   }
   if (!response.ok || !data.success) {
+    if (response.status === 401) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/login')) {
+        window.location.href = '/login?expired=1';
+      }
+    }
     throw new Error(data.error || `API Request failed (Status ${response.status})`);
   }
   return data.data;
@@ -151,6 +159,18 @@ export const api = {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ action, comments })
+    });
+    return handleResponse(res);
+  },
+
+  async askOfficerCopilot(applicationId, question) {
+    const res = await fetch(`${API_BASE}/officer/applications/${applicationId}/copilot-chat`, {
+      method: 'POST',
+      headers: {
+        ...getHeaders(),
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ question })
     });
     return handleResponse(res);
   },

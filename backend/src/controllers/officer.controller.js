@@ -186,7 +186,58 @@ const takeOfficerAction = async (req, res, next) => {
   }
 };
 
+// @desc    Officer Copilot Evidence-Based Q&A Chat
+// @route   POST /api/officer/applications/:id/copilot-chat
+// @access  Private/Officer
+const queryOfficerCopilot = async (req, res, next) => {
+  try {
+    const officerAgent = require('../agents/officer.agent');
+    const { question } = req.body;
+    const applicationId = req.params.id;
+
+    if (!question || !question.trim()) {
+      return res.status(400).json({ success: false, error: 'Please provide a valid question for the Officer Copilot.' });
+    }
+
+    const application = await prisma.application.findUnique({
+      where: { id: applicationId },
+      include: {
+        student: { select: { id: true, name: true, email: true } },
+        scholarship: true,
+        documents: true,
+        agentResults: true,
+        auditLogs: { orderBy: { timestamp: 'desc' }, take: 10 }
+      }
+    });
+
+    if (!application) {
+      return res.status(404).json({ success: false, error: 'Application not found' });
+    }
+
+    const copilotAnswer = await officerAgent.answerOfficerQuery(application, question.trim());
+
+    // Create Audit Log of Q&A interaction for manual compliance traceability
+    await prisma.auditLog.create({
+      data: {
+        applicationId,
+        userId: req.user.id,
+        actorType: 'OFFICER',
+        action: 'COPILOT_QA_QUERY',
+        details: `Officer asked Copilot: "${question.trim().substring(0, 100)}" -> Recommendation: ${copilotAnswer.recommendation}`
+      }
+    });
+
+    res.status(200).json({
+      success: true,
+      data: copilotAnswer
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getOfficerDashboard,
-  takeOfficerAction
+  takeOfficerAction,
+  queryOfficerCopilot
 };

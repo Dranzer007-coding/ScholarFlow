@@ -14,6 +14,24 @@ const createApplicationDraft = async (req, res, next) => {
       return res.status(400).json({ success: false, error: 'Please provide all required fields' });
     }
 
+    // Validate Bank Account Number (must be numeric, 9 to 18 digits)
+    const cleanBankAccount = String(bankAccountNumber).trim();
+    if (!/^\d{9,18}$/.test(cleanBankAccount)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid Bank Account Number. Must be a numeric value between 9 and 18 digits.'
+      });
+    }
+
+    // Validate IFSC Code (11 characters: 4 uppercase letters, digit 0, 6 alphanumeric)
+    const cleanIfsc = String(ifscCode).trim().toUpperCase();
+    if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(cleanIfsc)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid IFSC Code format. Must be a valid 11-character code (e.g., SBIN0001234).'
+      });
+    }
+
     // Check if scholarship exists
     const scholarship = await prisma.scholarship.findUnique({ where: { id: scholarshipId } });
     if (!scholarship) {
@@ -47,11 +65,12 @@ const createApplicationDraft = async (req, res, next) => {
         category,
         course,
         college,
-        bankAccountNumber,
-        ifscCode,
+        bankAccountNumber: cleanBankAccount,
+        ifscCode: cleanIfsc,
         aadhaarNumber
       }
     });
+
 
     // Create Audit Log
     await prisma.auditLog.create({

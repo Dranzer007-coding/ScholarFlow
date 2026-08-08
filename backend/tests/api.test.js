@@ -26,6 +26,23 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  // Re-seed demo users so manual login credentials (rahul@student.com / scholarflow_off@gmail.com) always remain active
+  const bcrypt = require('bcryptjs');
+  const studentHash = await bcrypt.hash('password123', 10);
+  const officerHash = await bcrypt.hash('scholar1234', 10);
+
+  await prisma.user.upsert({
+    where: { email: 'rahul@student.com' },
+    update: { passwordHash: studentHash },
+    create: { name: 'Rahul Sharma', email: 'rahul@student.com', passwordHash: studentHash, role: 'STUDENT' }
+  });
+
+  await prisma.user.upsert({
+    where: { email: 'scholarflow_off@gmail.com' },
+    update: { passwordHash: officerHash },
+    create: { name: 'Aachal Gupta', email: 'scholarflow_off@gmail.com', passwordHash: officerHash, role: 'OFFICER' }
+  });
+
   // Close database connection
   await prisma.$disconnect();
 });
@@ -119,6 +136,46 @@ describe('ScholarFlow AI Backend API Endpoints', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body.success).toBe(true);
     expect(res.body.data.length).toBeGreaterThan(0);
+  });
+
+  test('POST /api/applications - Reject invalid Bank Account Number format', async () => {
+    const res = await request(app)
+      .post('/api/applications')
+      .set('Authorization', `Bearer ${studentToken}`)
+      .send({
+        scholarshipId: scholarshipId,
+        cgpa: 8.5,
+        annualIncome: 150000.0,
+        category: 'GENERAL',
+        course: 'B.Tech',
+        college: 'Test University',
+        bankAccountNumber: 'ABC123INVALID',
+        ifscCode: 'TEST0001234',
+        aadhaarNumber: '111122223333'
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.error).toContain('Bank Account Number');
+  });
+
+  test('POST /api/applications - Reject invalid IFSC Code format', async () => {
+    const res = await request(app)
+      .post('/api/applications')
+      .set('Authorization', `Bearer ${studentToken}`)
+      .send({
+        scholarshipId: scholarshipId,
+        cgpa: 8.5,
+        annualIncome: 150000.0,
+        category: 'GENERAL',
+        course: 'B.Tech',
+        college: 'Test University',
+        bankAccountNumber: '1234567890',
+        ifscCode: 'INVALID_IFSC_CODE',
+        aadhaarNumber: '111122223333'
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.error).toContain('IFSC');
   });
 
   test('POST /api/applications - Create a draft application', async () => {

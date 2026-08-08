@@ -10,7 +10,8 @@
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:seed": "node prisma/seed.js",
     "db:setup": "npm run prisma:generate && npm run prisma:migrate && npm run prisma:seed",
-    "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles --testMatch=\"**/*.test.js\""
+    "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles --testMatch=\"**/*.test.js\"",
+    "test:eval": "node tests/eval_document_agent.js"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",

@@ -14,15 +14,20 @@ const notificationRoutes = require('./routes/notification.routes');
 const app = express();
 
 // Middlewares
-const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173').split(',').map(o => o.trim());
+const configuredOrigins = (process.env.FRONTEND_URL || '').split(',').map(o => o.trim()).filter(Boolean);
+const localhostRegex = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (e.g., curl, Postman in dev) or from the allowlist
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS: Origin '${origin}' is not allowed.`));
+    // Allow requests with no origin (e.g., curl, Mobile apps, Postman)
+    if (!origin) return callback(null, true);
+    
+    // Allow configured production/staging origins or any localhost dev origin
+    if (configuredOrigins.includes(origin) || localhostRegex.test(origin) || process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
     }
+    
+    return callback(new Error(`CORS: Origin '${origin}' is not allowed.`));
   },
   credentials: true
 }));

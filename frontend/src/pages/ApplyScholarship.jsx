@@ -70,6 +70,16 @@ const ApplyScholarship = () => {
       }
       setStep(3);
     } else if (step === 3) {
+      const cleanAccount = bankAccount.trim();
+      if (!/^\d{9,18}$/.test(cleanAccount)) {
+        setError('Bank Account Number must be between 9 and 18 numeric digits');
+        return;
+      }
+      const cleanIfsc = ifsc.trim().toUpperCase();
+      if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(cleanIfsc)) {
+        setError('IFSC Code must be a valid 11-character code (e.g., SBIN0001234: 4 letters, digit 0, 6 alphanumeric characters)');
+        return;
+      }
       setLoading(true);
       try {
         const app = await api.createApplication({
@@ -79,13 +89,17 @@ const ApplyScholarship = () => {
           category: category,
           course: course,
           college: college,
-          bankAccountNumber: bankAccount,
-          ifscCode: ifsc,
+          bankAccountNumber: cleanAccount,
+          ifscCode: cleanIfsc,
           aadhaarNumber: aadhaar
         });
         setCreatedAppId(app.id);
         setStep(4);
       } catch (err) {
+        if (err.message && (err.message.includes('Not authorized') || err.message.includes('user not found'))) {
+          navigate('/login?expired=1');
+          return;
+        }
         setError(err.message || 'Failed to create application draft');
       } finally {
         setLoading(false);
@@ -325,21 +339,23 @@ const ApplyScholarship = () => {
 
             <div className="form-group" style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '1rem' }}>
               <div>
-                <label className="form-label">Bank Account Number</label>
+                <label className="form-label">Bank Account Number (9-18 Digits)</label>
                 <input
                   type="text"
                   className="form-input"
+                  maxLength="18"
                   placeholder="918273645012"
                   value={bankAccount}
-                  onChange={e => setBankAccount(e.target.value)}
+                  onChange={e => setBankAccount(e.target.value.replace(/\D/g, ''))}
                   required
                 />
               </div>
               <div>
-                <label className="form-label">IFSC Code</label>
+                <label className="form-label">IFSC Code (11 Chars)</label>
                 <input
                   type="text"
                   className="form-input"
+                  maxLength="11"
                   placeholder="SBIN0001234"
                   value={ifsc}
                   onChange={e => setIfsc(e.target.value.toUpperCase())}
