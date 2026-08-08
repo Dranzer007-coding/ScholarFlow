@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "cd backend && npm install && DATABASE_URL=file:./prisma/dev.db npx prisma generate && cd ../frontend && npm install && npm run build",
+  "buildCommand": "DATABASE_URL=file:./backend/prisma/dev.db npx prisma generate --schema=backend/prisma/schema.prisma && npm --prefix frontend install && npm --prefix frontend run build",
   "outputDirectory": "frontend/dist",
   "rewrites": [
     {
