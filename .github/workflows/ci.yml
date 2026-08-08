@@ -10,6 +10,10 @@ jobs:
   backend-test:
     name: 🛡️ Backend Unit Tests, Integration API Tests & Agent Eval
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: test
+      JWT_SECRET: scholarflow_ci_secret_key_12345
+      DATABASE_URL: "file:./dev.db"
 
     steps:
     - name: Checkout Code
@@ -34,10 +38,6 @@ jobs:
         npx prisma db push --skip-generate
 
     - name: Run Jest Unit & Integration Tests (21/21 Pass)
-      env:
-        NODE_ENV: test
-        JWT_SECRET: scholarflow_ci_secret_key_12345
-        DATABASE_URL: "file:./dev.db"
       run: |
         cd backend
         npm test
