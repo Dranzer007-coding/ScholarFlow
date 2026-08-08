@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npx vite build frontend",
+  "buildCommand": "vite build --config vite.config.mjs",
   "outputDirectory": "frontend/dist",
   "rewrites": [
     {
