@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "vite build frontend",
+  "buildCommand": "npx vite build frontend",
   "outputDirectory": "frontend/dist",
   "rewrites": [
     {
