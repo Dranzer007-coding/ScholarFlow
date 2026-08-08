@@ -15,10 +15,15 @@ const handleResponse = async (response) => {
     const text = await response.text();
     data = text ? JSON.parse(text) : {};
   } catch (_err) {
-
+    if (response.status === 502 || response.status === 503 || response.status === 504) {
+      throw new Error(`Backend API server is unreachable (Status ${response.status}). Please verify that the backend server is running on http://127.0.0.1:5000 (run 'npm run dev').`);
+    }
     throw new Error(`API Request failed: Server returned an invalid response (Status ${response.status})`);
   }
   if (!response.ok || !data.success) {
+    if (response.status === 502 || response.status === 503 || response.status === 504) {
+      throw new Error(`Backend API server is unreachable (Status ${response.status}). Please verify that the backend server is running on http://127.0.0.1:5000 (run 'npm run dev').`);
+    }
     if (response.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');

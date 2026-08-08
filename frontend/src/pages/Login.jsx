@@ -156,35 +156,7 @@ const Login = ({ onLogin }) => {
             {loading ? 'Processing...' : isRegister ? 'Create Account' : 'Continue to Portal'}
           </button>
         </form>
-        {/* Quick Fill Demo Credentials */}
-        <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
-          <button
-            type="button"
-            onClick={() => {
-              if (isStudent) {
-                setEmail('rahul@student.com');
-                setPassword('password123');
-              } else {
-                setEmail('scholarflow_off@gmail.com');
-                setPassword('scholar1234');
-              }
-              setError('');
-            }}
-            style={{
-              background: 'rgba(255, 153, 51, 0.1)',
-              border: '1px solid rgba(255, 153, 51, 0.3)',
-              color: 'var(--accent-saffron)',
-              padding: '0.4rem 0.8rem',
-              borderRadius: '6px',
-              fontSize: '0.8125rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            ⚡ Auto-fill Demo {isStudent ? 'Student' : 'Officer'} Credentials
-          </button>
-        </div>
+
         {isStudent && (
           <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.875rem' }}>
             <span style={{ color: 'var(--text-secondary)' }}>

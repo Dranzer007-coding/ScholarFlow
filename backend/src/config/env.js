@@ -17,7 +17,7 @@ if (!JWT_SECRET) {
 
 module.exports = {
   PORT: process.env.PORT || 5000,
-  DATABASE_URL: process.env.DATABASE_URL,
+  DATABASE_URL: process.env.DATABASE_URL || 'file:./dev.db',
   JWT_SECRET: JWT_SECRET || 'scholarflow_default_secret_key_dev_only',
   GEMINI_API_KEY: process.env.GEMINI_API_KEY || '',
   NODE_ENV
