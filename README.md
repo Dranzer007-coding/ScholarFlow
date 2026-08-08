@@ -83,6 +83,18 @@ npm run dev
 
 ---
 
+## 🔑 Demo Login Credentials
+
+> [!IMPORTANT]
+> The **Officer Portal** is restricted to pre-authorized officer credentials to enforce administrative security. Public user registration creates Student accounts only.
+
+| Portal | Role | Email / ID | Password | Portal Features & Access |
+| :--- | :---: | :--- | :--- | :--- |
+| **Officer Portal** 🛡️ | `OFFICER` | `scholarflow_off@gmail.com` | `scholar1234` | Verification dashboard, AI Copilot recommendations, fraud risk scores, and decision authority |
+| **Student Portal** 🎓 | `STUDENT` | `rahul@student.com` | `password123` | Scholarship browsing, document submission, and real-time application tracking |
+
+---
+
 ## 🧪 Testing & Quality Assurance
 
 ### Run Backend Unit & Integration Tests
