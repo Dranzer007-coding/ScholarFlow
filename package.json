@@ -9,6 +9,8 @@
     "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,green\" \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
     "start": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,green\" \"npm --prefix backend start\" \"npm --prefix frontend run dev\"",
     "postinstall": "cross-env DATABASE_URL=\"file:./dev.db\" prisma generate --schema=backend/prisma/schema.prisma && npm --prefix frontend install --no-audit --no-fund",
+    "db:setup": "npm --prefix backend run db:setup",
+    "start:backend": "npm --prefix backend start",
     "build": "npx vite build --config vite.config.mjs"
   },
   "dependencies": {

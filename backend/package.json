@@ -9,7 +9,7 @@
     "prisma:generate": "cross-env DATABASE_URL=\"file:./dev.db\" prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:seed": "node prisma/seed.js",
-    "db:setup": "npm run prisma:generate && npm run prisma:migrate && npm run prisma:seed",
+    "db:setup": "cross-env DATABASE_URL=\"file:./dev.db\" prisma generate && cross-env DATABASE_URL=\"file:./dev.db\" prisma db push && node prisma/seed.js",
     "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles --testMatch=\"**/*.test.js\"",
     "test:eval": "node tests/eval_document_agent.js"
   },
