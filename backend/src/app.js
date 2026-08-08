@@ -37,7 +37,11 @@ app.use(morgan('dev'));
 // Serve uploaded static files
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
-// Health check
+// Root & Health check
+app.get('/', (req, res) => {
+  res.status(200).json({ success: true, message: 'ScholarFlow AI Backend API Engine is live and operational.', healthCheck: '/api/health' });
+});
+
 app.get('/api/health', (req, res) => {
   res.status(200).json({ success: true, message: 'ScholarFlow AI API Server is running smoothly' });
 });
