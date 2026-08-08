@@ -16,14 +16,15 @@ const app = express();
 // Middlewares
 const configuredOrigins = (process.env.FRONTEND_URL || '').split(',').map(o => o.trim()).filter(Boolean);
 const localhostRegex = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+const vercelNetlifyRegex = /^https:\/\/[a-zA-Z0-9-]+\.(vercel\.app|netlify\.app)$/;
 
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (e.g., curl, Mobile apps, Postman)
     if (!origin) return callback(null, true);
     
-    // Allow configured production/staging origins or any localhost dev origin
-    if (configuredOrigins.includes(origin) || localhostRegex.test(origin) || process.env.NODE_ENV !== 'production') {
+    // Allow configured production origins, localhost dev, or any *.vercel.app / *.netlify.app origin
+    if (configuredOrigins.includes(origin) || localhostRegex.test(origin) || vercelNetlifyRegex.test(origin) || process.env.NODE_ENV !== 'production') {
       return callback(null, true);
     }
     
