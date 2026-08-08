@@ -8,8 +8,8 @@
     "dev:frontend": "npm --prefix frontend run dev",
     "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,green\" \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
     "start": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,green\" \"npm --prefix backend start\" \"npm --prefix frontend run dev\"",
-    "postinstall": "cross-env DATABASE_URL=\"file:./dev.db\" prisma generate --schema=backend/prisma/schema.prisma",
-    "build": "cd frontend && npx vite build"
+    "postinstall": "cross-env DATABASE_URL=\"file:./dev.db\" prisma generate --schema=backend/prisma/schema.prisma && npm --prefix frontend install --no-audit --no-fund",
+    "build": "cd frontend && npm run build"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
