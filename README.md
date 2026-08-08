@@ -126,9 +126,8 @@ ScholarFlow includes a continuous integration workflow located at `.github/workf
 ---
 
 ## 📄 Team Members
-
-- Anubrata Das
-- Sibun Kumar Sahoo
-- Soumyadip Dey
-- Anubhav Roy
 Team name: THE BRAINLESS
+- Anubrata Das(Roll-25155527)
+- Sibun Kumar Sahu(Roll- 25155332)
+- Soumyadip Dey(Roll-25155336)
+- Anubhab Roy(Roll-25155011)
