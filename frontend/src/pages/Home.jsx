@@ -22,23 +22,6 @@ import {
 const Home = () => {
   const navigate = useNavigate();
   const [activePersona, setActivePersona] = useState('students');
-  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
-  const [contactForm, setContactForm] = useState({
-    name: '',
-    email: '',
-    role: 'Student',
-    subject: 'Feedback',
-    message: ''
-  });
-
-  const handleContactSubmit = (e) => {
-    e.preventDefault();
-    setFeedbackSubmitted(true);
-    setTimeout(() => {
-      setFeedbackSubmitted(false);
-      setContactForm({ name: '', email: '', role: 'Student', subject: 'Feedback', message: '' });
-    }, 4000);
-  };
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
@@ -530,7 +513,7 @@ const Home = () => {
             <ShieldCheck size={18} /> For Officers
           </button>
 
-          <button
+          {/* <button
             onClick={() => setActivePersona('institutions')}
             style={{
               padding: '0.75rem 1.5rem',
@@ -548,7 +531,7 @@ const Home = () => {
             }}
           >
             <Building2 size={18} /> For Nodal Agencies
-          </button>
+          </button> */}
         </div>
 
         {/* Tab Content Box */}
@@ -625,7 +608,7 @@ const Home = () => {
             </div>
           )}
 
-          {activePersona === 'institutions' && (
+          {/* {activePersona === 'institutions' && (
             <div className="animate-slide-in" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
               <div>
                 <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent-emerald)', marginBottom: '0.75rem' }}>
@@ -659,140 +642,147 @@ const Home = () => {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </section>
 
       {/* CONTACT & FEEDBACK SECTION */}
       <section id="contact" style={{
-        maxWidth: '900px',
-        margin: '5rem auto 4rem',
+        maxWidth: '1200px',
+        margin: '5rem auto',
         padding: '0 1.5rem'
       }}>
+        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+          <span style={{ color: 'var(--accent-saffron)', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            FEEDBACK & RATINGS
+          </span>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2.25rem', fontWeight: 800, marginTop: '0.5rem' }}>
+            Shape the Future of ScholarFlow AI
+          </h2>
+        </div>
+
         <div className="glass-panel" style={{
-          padding: '3rem 2.5rem',
+          maxWidth: '1000px',
+          margin: '0 auto',
+          padding: '0',
           borderRadius: '24px',
-          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4)'
+          overflow: 'hidden',
+          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.45)',
+          border: '1px solid rgba(249, 115, 22, 0.25)',
+          background: 'linear-gradient(135deg, rgba(13, 19, 33, 0.95), rgba(10, 14, 26, 0.98))'
         }}>
-          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <span style={{ color: 'var(--accent-saffron)', fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-              GET IN TOUCH & FEEDBACK
-            </span>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 800, marginTop: '0.4rem' }}>
-              Contact ScholarFlow AI Team
-            </h2>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', marginTop: '0.4rem' }}>
-              Have questions, feedback, or need assistance? Send us a message and our team will respond shortly.
-              Email: <a href="mailto:[anubratadas.kiit@gmail.com]">anubratadas.kiit@gmail.com</a>
-            </p>
+          {/* Banner Graphic Header */}
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            height: '220px',
+            overflow: 'hidden',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+          }}>
+            <img
+              src="/feedback_banner.png"
+              alt="ScholarFlow AI Feedback Survey Header"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                filter: 'brightness(0.9) contrast(1.1)'
+              }}
+            />
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(to top, rgba(10, 14, 26, 0.95) 0%, rgba(10, 14, 26, 0.3) 60%, transparent 100%)',
+              display: 'flex',
+              alignItems: 'flex-end',
+              padding: '1.75rem 2.5rem'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <img
+                  src="/logo.jpg"
+                  alt="ScholarFlow AI Logo"
+                  style={{
+                    width: '52px',
+                    height: '52px',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 15px rgba(249, 115, 22, 0.4)',
+                    border: '2px solid var(--accent-saffron)'
+                  }}
+                />
+                <div>
+                  <span style={{ color: 'var(--accent-saffron)', fontSize: '0.8125rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                    OFFICIAL USER REVIEW SURVEY
+                  </span>
+                  <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.75rem', fontWeight: 800, color: '#fff', margin: 0 }}>
+                    ScholarFlow AI Feedback Form
+                  </h3>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {feedbackSubmitted ? (
-            <div className="animate-slide-in" style={{
-              background: 'rgba(16, 185, 129, 0.15)',
-              border: '1px solid var(--accent-emerald)',
-              padding: '2rem',
-              borderRadius: '16px',
-              textAlign: 'center'
+          {/* Section Body */}
+          <div style={{ padding: '2.5rem', textAlign: 'center' }}>
+            <p style={{
+              color: 'var(--text-secondary)',
+              fontSize: '1.05rem',
+              lineHeight: 1.6,
+              maxWidth: '720px',
+              margin: '0 auto 2rem'
             }}>
-              <CheckCircle size={48} color="var(--accent-emerald)" style={{ margin: '0 auto 1rem' }} />
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
-                Thank You for Your Feedback!
-              </h3>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
-                Your message has been received by the ScholarFlow AI team. We appreciate your contribution to building a stronger scholarship ecosystem.
-              </p>
-            </div>
-          ) : (
-            <form onSubmit={handleContactSubmit}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
-                <div className="form-group">
-                  <label className="form-label">Your Name</label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    placeholder="Enter your name"
-                    value={contactForm.name}
-                    onChange={e => setContactForm({ ...contactForm, name: e.target.value })}
-                    required
-                  />
-                </div>
+              Help us shape the future of AI-powered scholarship governance in India. Share your experience, rate our agent accuracy, and suggest improvements directly on our official survey form.
+            </p>
 
-                <div className="form-group">
-                  <label className="form-label">Email Address</label>
-                  <input
-                    type="email"
-                    className="form-input"
-                    placeholder="name@domain.com"
-                    value={contactForm.email}
-                    onChange={e => setContactForm({ ...contactForm, email: e.target.value })}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
-                <div className="form-group">
-                  <label className="form-label">I Am A...</label>
-                  <select
-                    className="form-input"
-                    value={contactForm.role}
-                    onChange={e => setContactForm({ ...contactForm, role: e.target.value })}
-                    style={{ background: 'rgba(13, 19, 33, 0.9)' }}
-                  >
-                    <option value="Student">Student</option>
-                    <option value="Scholarship Officer">Scholarship Officer</option>
-                    <option value="Educational Institution">Educational Institution</option>
-                    <option value="Government Official">Government / Nodal Official</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">Subject</label>
-                  <select
-                    className="form-input"
-                    value={contactForm.subject}
-                    onChange={e => setContactForm({ ...contactForm, subject: e.target.value })}
-                    style={{ background: 'rgba(13, 19, 33, 0.9)' }}
-                  >
-                    <option value="Feedback">Product Feedback</option>
-                    <option value="Feature Request">Feature Request</option>
-                    <option value="Support">Technical Support</option>
-                    <option value="Partnership">Institutional Partnership</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Your Message / Feedback</label>
-                <textarea
-                  className="form-input"
-                  rows={4}
-                  placeholder="Share your thoughts, suggestions, or inquiry..."
-                  value={contactForm.message}
-                  onChange={e => setContactForm({ ...contactForm, message: e.target.value })}
-                  required
-                  style={{ resize: 'vertical' }}
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="btn btn-primary flex-center"
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '1.25rem',
+              flexWrap: 'wrap'
+            }}>
+              <a
+                href="https://forms.gle/mriLSbNwvh2poofs7"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary"
                 style={{
-                  width: '100%',
-                  padding: '0.875rem',
-                  fontSize: '1rem',
-                  borderRadius: '10px',
-                  boxShadow: '0 4px 20px rgba(249, 115, 22, 0.3)'
+                  padding: '0.95rem 2.25rem',
+                  fontSize: '1.05rem',
+                  fontWeight: 700,
+                  borderRadius: '12px',
+                  boxShadow: '0 8px 30px rgba(249, 115, 22, 0.4)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.6rem',
+                  textDecoration: 'none'
                 }}
               >
-                <Send size={18} style={{ marginRight: '0.5rem' }} />
-                Submit Message
-              </button>
-            </form>
-          )}
+                <Sparkles size={20} />
+                Open Official Feedback Form
+                <ArrowRight size={18} />
+              </a>
+            </div>
+
+            <div style={{
+              marginTop: '2.25rem',
+              paddingTop: '1.5rem',
+              borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '2rem',
+              flexWrap: 'wrap',
+              fontSize: '0.875rem',
+              color: 'var(--text-secondary)'
+            }}>
+              <div>
+                📧 Support Email: <a href="mailto:scholarflow.ai269@gmail.com" style={{ color: 'var(--accent-saffron)', textDecoration: 'none', fontWeight: 600 }}>scholarflow.ai269@gmail.com</a>
+              </div>
+              <div>
+                🔒 100% Confidential & Secure Feedback
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

@@ -284,3 +284,95 @@ body.light-theme .gauge-bg {
   font-weight: 700;
   font-size: 1.5rem;
 }
+
+/* Responsive Table Wrapper */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+}
+
+/* Mobile Responsive Navigation & Layout Rules */
+.mobile-nav-toggle {
+  display: none;
+}
+
+.mobile-nav-drawer {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  
+  .mobile-nav-toggle {
+    display: flex !important;
+  }
+
+  .mobile-nav-drawer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    background: rgba(13, 19, 33, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-card);
+    border-radius: 14px;
+    margin: 0.5rem 1rem 1rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    animation: slideIn 0.25s ease-out forwards;
+  }
+
+  body.light-theme .mobile-nav-drawer {
+    background: rgba(255, 255, 255, 0.98);
+  }
+
+  /* Responsive Containers & Padding */
+  .container {
+    padding-left: 0.85rem !important;
+    padding-right: 0.85rem !important;
+  }
+
+  .glass-panel {
+    border-radius: 14px !important;
+    padding: 1.25rem 1rem !important;
+  }
+
+  /* Responsive Grid layouts */
+  .grid-responsive {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Full width buttons on mobile */
+  .btn-mobile-full {
+    width: 100% !important;
+  }
+
+  /* Stepper labels on mobile */
+  .stepper-label {
+    display: none !important;
+  }
+
+  /* Header margin */
+  header {
+    margin: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+
+  .btn {
+    padding: 0.55rem 1rem;
+    font-size: 0.8125rem;
+  }
+
+  .glass-panel {
+    padding: 1rem 0.75rem !important;
+  }
+}
