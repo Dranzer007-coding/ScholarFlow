@@ -28,15 +28,21 @@ const Login = ({ onLogin }) => {
     setLoading(true);
 
     try {
+      const cleanEmail = email.trim().toLowerCase();
+      let loginData;
       if (isRegister) {
-        await api.register(name, email, password, isStudent ? 'STUDENT' : 'OFFICER');
-        const loginData = await api.login(email, password);
-        onLogin(loginData);
-        navigate(isStudent ? '/dashboard' : '/reviewer');
+        await api.register(name.trim(), cleanEmail, password, 'STUDENT');
+        loginData = await api.login(cleanEmail, password);
       } else {
-        const loginData = await api.login(email, password);
-        onLogin(loginData);
-        navigate(isStudent ? '/dashboard' : '/reviewer');
+        loginData = await api.login(cleanEmail, password);
+      }
+      onLogin(loginData);
+
+      // Route based on actual role returned by backend
+      if (loginData?.role?.toUpperCase() === 'OFFICER') {
+        navigate('/reviewer');
+      } else {
+        navigate('/dashboard');
       }
     } catch (err) {
       setError(err.message || 'Authentication failed. Please check credentials.');

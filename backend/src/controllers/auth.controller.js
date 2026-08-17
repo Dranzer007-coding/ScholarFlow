@@ -79,8 +79,14 @@ const login = async (req, res, next) => {
       return res.status(400).json({ success: false, error: 'Please provide email and password' });
     }
 
-    // Check for user
-    const user = await prisma.user.findUnique({ where: { email } });
+    const cleanEmail = email.trim().toLowerCase();
+    let user = await prisma.user.findUnique({ where: { email: cleanEmail } });
+    if (!user) {
+      user = await prisma.user.findFirst({
+        where: { email: { equals: cleanEmail } }
+      });
+    }
+
     if (!user) {
       return res.status(401).json({ success: false, error: 'Invalid credentials' });
     }

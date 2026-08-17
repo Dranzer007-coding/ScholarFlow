@@ -35,8 +35,8 @@ const HeaderNav = ({ user, isDark, toggleTheme, handleSignOut }) => {
       <header className="glass-panel" style={{
         margin: '1rem', padding: '0.875rem 1.75rem', borderRadius: '14px',
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        position: 'sticky', top: '1rem', zIndex: 100,
-        background: 'rgba(13, 19, 33, 0.9)',
+        position: 'sticky', top: '0.75rem', zIndex: 10000,
+        background: 'rgba(13, 19, 33, 0.92)',
         backdropFilter: 'blur(16px)'
       }}>
         {/* Brand & Logo */}
@@ -97,6 +97,19 @@ const HeaderNav = ({ user, isDark, toggleTheme, handleSignOut }) => {
             onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
           >
             About
+          </button>
+
+          <button
+            onClick={() => handleNavClick('team')}
+            style={{
+              background: 'none', border: 'none', color: 'var(--text-secondary)',
+              fontSize: '0.9375rem', fontWeight: 600, cursor: 'pointer', outline: 'none',
+              transition: 'color 0.2s ease'
+            }}
+            onMouseEnter={(e) => e.target.style.color = 'var(--text-primary)'}
+            onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
+          >
+            Team
           </button>
 
           <button
@@ -213,6 +226,15 @@ const HeaderNav = ({ user, isDark, toggleTheme, handleSignOut }) => {
             }}
           >
             About System
+          </button>
+          <button
+            onClick={() => handleNavClick('team')}
+            style={{
+              background: 'none', border: 'none', color: 'var(--text-primary)',
+              fontSize: '1rem', fontWeight: 600, textAlign: 'left', cursor: 'pointer'
+            }}
+          >
+            Our Team
           </button>
           <button
             onClick={() => handleNavClick('contact')}

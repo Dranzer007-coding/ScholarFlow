@@ -1,5 +1,24 @@
 const API_BASE = import.meta.env.VITE_API_BASE || '/api';
 
+const fetchWithTimeout = async (url, options = {}, timeoutMs = 15000) => {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal
+    });
+    clearTimeout(id);
+    return response;
+  } catch (err) {
+    clearTimeout(id);
+    if (err.name === 'AbortError') {
+      throw new Error('Server connection timed out after 15 seconds. Please verify backend server status.');
+    }
+    throw err;
+  }
+};
+
 const getHeaders = () => {
   const token = localStorage.getItem('token');
   const headers = {};
@@ -39,7 +58,7 @@ const handleResponse = async (response) => {
 export const api = {
   // Auth
   async login(email, password) {
-    const res = await fetch(`${API_BASE}/auth/login`, {
+    const res = await fetchWithTimeout(`${API_BASE}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -51,7 +70,7 @@ export const api = {
   },
 
   async register(name, email, password, role) {
-    const res = await fetch(`${API_BASE}/auth/register`, {
+    const res = await fetchWithTimeout(`${API_BASE}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password, role })
@@ -60,7 +79,7 @@ export const api = {
   },
 
   async getMe() {
-    const res = await fetch(`${API_BASE}/auth/me`, {
+    const res = await fetchWithTimeout(`${API_BASE}/auth/me`, {
       headers: getHeaders()
     });
     return handleResponse(res);

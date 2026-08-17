@@ -15,7 +15,9 @@ import {
   Building2,
   GraduationCap,
   Award,
-  Send
+  Send,
+  Users,
+  Code2
 } from 'lucide-react';
 
 
@@ -643,6 +645,337 @@ const Home = () => {
               </div>
             </div>
           )} */}
+        </div>
+      </section>
+
+      {/* MEET THE TEAM & ABOUT US SECTION */}
+      <section id="team" style={{
+        maxWidth: '1200px',
+        margin: '5rem auto 3rem',
+        padding: '0 1.5rem'
+      }}>
+        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '0.35rem 0.85rem',
+            borderRadius: '9999px',
+            background: 'rgba(249, 115, 22, 0.12)',
+            border: '1px solid rgba(249, 115, 22, 0.3)',
+            marginBottom: '0.75rem'
+          }}>
+            <Users size={16} color="var(--accent-saffron)" />
+            <span style={{ color: 'var(--accent-saffron)', fontSize: '0.8125rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              MEET THE BUILDERS
+            </span>
+          </div>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2.25rem', fontWeight: 800, marginTop: '0.25rem' }}>
+            The Team Behind ScholarFlow AI
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', maxWidth: '680px', margin: '0.75rem auto 0', fontSize: '1.05rem', lineHeight: 1.6 }}>
+            Architecting next-generation autonomous AI multi-agent pipelines for transparent, fraud-free, and rapid scholarship governance.
+          </p>
+        </div>
+
+        {/* 4 Circular Photo Cards Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+          gap: '2rem',
+          marginBottom: '3rem'
+        }}>
+          {[
+            {
+              name: 'ANUBRATA DAS',
+              role: 'Lead Developer & AI Architect',
+              specialization: 'Designing the system architecture and building the backend, AI-agent workflow, integrations, and deployment infrastructure',
+              gradient: 'linear-gradient(135deg, #f97316, #e11d48)',
+              avatarBg: '#2a1710',
+              initials: 'AD',
+              image: '/team/anubrata.jpg',
+              github: 'https://github.com/Dranzer007-coding',
+              linkedin: 'https://www.linkedin.com/in/anubrata-das-953173372/'
+            },
+            {
+              name: 'SIBUN KUMAR SAHU',
+              role: 'Frontend Engineer & UI/UX Designer',
+              specialization: 'Bringing the product to life through React, intuitive interfaces, dashboards, and a smooth user experience.',
+              gradient: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+              avatarBg: '#101a2e',
+              initials: 'SKS',
+              image: '/team/sibun.jpg',
+              github: 'https://github.com/25155332-sibun',
+              linkedin: 'https://www.linkedin.com/in/sibun-kumar-sahu-0b2729375/'
+            },
+            {
+              name: 'SOUMYADIP DEY',
+              role: 'Product & QA Engineer',
+              specialization: 'Turning requirements into clear workflows, documentation, test scenarios, and a polished product experience.',
+              gradient: 'linear-gradient(135deg, #10b981, #06b6d4)',
+              avatarBg: '#0e261f',
+              initials: 'SD',
+              image: '/team/soumyadip.jpg',
+              github: 'https://github.com/25155336-Soumyadip',
+              linkedin: 'https://www.linkedin.com/in/soumyadip-dey-005822368/'
+            },
+            {
+              name: 'ANUBHAB ROY',
+              role: 'Data & Integration Support',
+              specialization: 'Ensuring reliable data flow through database validation, API testing, integration checks, and live-demo support.',
+              gradient: 'linear-gradient(135deg, #f59e0b, #ef4444)',
+              avatarBg: '#291d0c',
+              initials: 'AR',
+              image: '/team/anubhab.jpg',
+              github: 'https://github.com/anubhabroy01',
+              linkedin: 'https://www.linkedin.com/in/anubhab-roy-2a9364383/'
+            }
+          ].map((member, idx) => (
+            <div
+              key={idx}
+              className="glass-panel"
+              style={{
+                padding: '2.25rem 1.5rem',
+                borderRadius: '24px',
+                textAlign: 'center',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                background: 'linear-gradient(145deg, rgba(13, 19, 33, 0.9), rgba(18, 26, 45, 0.8))',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-6px)';
+                e.currentTarget.style.borderColor = 'rgba(249, 115, 22, 0.4)';
+                e.currentTarget.style.boxShadow = '0 16px 40px rgba(249, 115, 22, 0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.3)';
+              }}
+            >
+              {/* Circular Avatar Frame */}
+              <div style={{
+                position: 'relative',
+                width: '120px',
+                height: '120px',
+                margin: '0 auto 1.5rem',
+                borderRadius: '50%',
+                padding: '4px',
+                background: member.gradient,
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)'
+              }}>
+                <div style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '50%',
+                  background: member.avatarBg,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '2rem',
+                  fontWeight: 800,
+                  color: '#fff',
+                  fontFamily: 'var(--font-display)',
+                  letterSpacing: '0.05em',
+                  border: '2px solid rgba(13, 19, 33, 0.9)',
+                  overflow: 'hidden'
+                }}>
+                  {member.image ? (
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        borderRadius: '50%'
+                      }}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                  ) : (
+                    member.initials
+                  )}
+                </div>
+              </div>
+
+              {/* Name & Role */}
+              <h3 style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '1.35rem',
+                fontWeight: 700,
+                color: '#fff',
+                marginBottom: '0.35rem'
+              }}>
+                {member.name}
+              </h3>
+
+              <div style={{
+                display: 'inline-block',
+                fontSize: '0.8125rem',
+                fontWeight: 700,
+                color: 'var(--accent-saffron)',
+                letterSpacing: '0.04em',
+                marginBottom: '0.85rem',
+                textTransform: 'uppercase'
+              }}>
+                {member.role}
+              </div>
+
+              <p style={{
+                fontSize: '0.875rem',
+                color: 'var(--text-secondary)',
+                lineHeight: 1.5,
+                margin: '0 0 1.25rem',
+                minHeight: '2.6em'
+              }}>
+                {member.specialization}
+              </p>
+
+              {/* Social Links */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '0.75rem'
+              }}>
+                <a
+                  href={member.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${member.name} GitHub`}
+                  style={{
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '50%',
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'var(--text-secondary)',
+                    transition: 'all 0.2s ease',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = '#fff';
+                    e.currentTarget.style.background = 'rgba(249, 115, 22, 0.2)';
+                    e.currentTarget.style.borderColor = 'var(--accent-saffron)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--text-secondary)';
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+                    <path d="M9 18c-4.51 2-5-2-7-2" />
+                  </svg>
+                </a>
+
+                <a
+                  href={member.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${member.name} LinkedIn`}
+                  style={{
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '50%',
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'var(--text-secondary)',
+                    transition: 'all 0.2s ease',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = '#fff';
+                    e.currentTarget.style.background = 'rgba(59, 130, 246, 0.2)';
+                    e.currentTarget.style.borderColor = '#3b82f6';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--text-secondary)';
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                    <rect x="2" y="9" width="4" height="12" />
+                    <circle cx="4" cy="4" r="2" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Hackathon Highlights & Core Architecture Banner */}
+        <div className="glass-panel" style={{
+          padding: '1.75rem 2.25rem',
+          borderRadius: '20px',
+          background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.08), rgba(16, 185, 129, 0.06))',
+          border: '1px solid rgba(249, 115, 22, 0.2)',
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '1.5rem'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '14px',
+              background: 'rgba(249, 115, 22, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--accent-saffron)',
+              flexShrink: 0
+            }}>
+              <Code2 size={24} />
+            </div>
+            <div>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0, color: '#fff' }}>
+                Built for Next-Gen Scholarship Governance
+              </h4>
+              <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', margin: '0.2rem 0 0' }}>
+                Powered by 5 Autonomous AI Agents, Prisma ORM Audit Trails, and Deterministic Fallbacks.
+              </p>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <span style={{
+              padding: '0.4rem 0.85rem',
+              borderRadius: '9999px',
+              background: 'rgba(255, 255, 255, 0.06)',
+              fontSize: '0.8125rem',
+              fontWeight: 600,
+              color: 'var(--accent-emerald)',
+              border: '1px solid rgba(16, 185, 129, 0.3)'
+            }}>
+              ✓ 5 Multi-Agent Roles
+            </span>
+            <span style={{
+              padding: '0.4rem 0.85rem',
+              borderRadius: '9999px',
+              background: 'rgba(255, 255, 255, 0.06)',
+              fontSize: '0.8125rem',
+              fontWeight: 600,
+              color: 'var(--accent-saffron)',
+              border: '1px solid rgba(249, 115, 22, 0.3)'
+            }}>
+              ✓ Zero Hallucination Policy
+            </span>
+          </div>
         </div>
       </section>
 
